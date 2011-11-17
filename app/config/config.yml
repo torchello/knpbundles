@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
-
+    - { resource: @KnpBundlesBundle/Resources/config/security.yml }
+    
 framework:
     charset:          UTF-8
     csrf_protection:  true

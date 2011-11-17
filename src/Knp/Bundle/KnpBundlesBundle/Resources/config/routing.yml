@@ -56,4 +56,10 @@ add_link:
 add_repo:
     pattern:        /add
     defaults:       { _controller: KnpBundlesBundle:Repo:add }
-    requirements:   { _method: "GET|POST" }  
+    requirements:   { _method: "GET|POST" }
+
+login:
+    pattern:        /login
+
+logout:
+    pattern:        /logout

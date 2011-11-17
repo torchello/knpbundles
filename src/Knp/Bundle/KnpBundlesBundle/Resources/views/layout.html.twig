@@ -53,8 +53,23 @@
                 <input type="text" id="search-query" name="q" value="{% block search_query %}{% endblock %}" />
                 <button id="search-btn">{% trans %}search.label{% endtrans %}</button>
             </form>
+
+            <div id="auth">
+                <div id="octocat">
+                    <img src="{{ asset('bundles/knpbundles/images/octocat.png') }}" />
+                </div>
+                {% if app.security.getToken().getUser() != 'anon.' %}
+                <div>
+                You're logged as <b>{{ app.security.getToken().getUser() }}</b><br />
+                <a href="{{ path('logout') }}">Log out</a>
+                </div>
+                {% else %}
+                <a class="login" href="{{ path('login') }}">Login via GitHub</a>
+                {% endif %}
+            </div>
+
             <div id="global-tip">{% trans %}search.tooltip.0{% endtrans %}<br>{% trans %}search.tooltip.1{% endtrans %}</div>
-        
+
             <div id="content" class="center clearfix">
                 <div id="content-title">
                     {% block content_title %}

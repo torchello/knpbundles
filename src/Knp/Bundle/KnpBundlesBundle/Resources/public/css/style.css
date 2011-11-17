@@ -109,7 +109,7 @@ h1 {
 }
 
 #global-gplusone { position: absolute; right: 40px; top: 16px; }
-#global-tip { margin-bottom: 10px; margin-top: 5px; color: #666; font-size: 13px;}
+#global-tip { margin-bottom: 10px; margin-top: 5px; color: #666; font-size: 13px; padding-left: 250px;}
 
 /* ----- Goodies ----- */
 
@@ -171,14 +171,14 @@ h1 {
     padding: 0;
     border: none;
     margin: 0px auto 5px auto;
-    width: 670px;
+    width: 470px;
 }
     #search-box label { display: none; }
     #search-box input {
         float: left;
         border: none;
         height: 25px;
-        width: 618px;
+        width: 418px;
         padding: 1px 7px 1px 7px;
         color: #666;
         font-size: 17px;
@@ -767,3 +767,20 @@ h1 {
 
 /* ----- API ----- */
 
+/* ----- Auth ----- */
+#auth {
+    float: right;
+    width: 250px;
+    font-size: 12px;
+    text-align: right;
+}
+#auth a.login {
+    line-height: 36px;
+}
+#octocat {
+    float: right;
+}
+#octocat img {
+    width: 36px;
+    padding-left: 5px;
+}
