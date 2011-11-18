@@ -10,11 +10,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * A link to repo manuals and how-to
  *
- * @ORM\Entity(repositoryClass="Knp\Bundle\KnpBundlesBundle\Entity\LinkRepository")
+ * @ORM\Entity()
  * @ORM\Table(
  *      name="link"
  * )
- * @ORM\HasLifecycleCallbacks
  */
 class Link
 {

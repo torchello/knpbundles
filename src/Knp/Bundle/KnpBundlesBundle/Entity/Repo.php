@@ -2,6 +2,8 @@
 
 namespace Knp\Bundle\KnpBundlesBundle\Entity;
 
+use Proxies\KnpBundleKnpBundlesBundleEntityKnpbundlesUserProxy;
+
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -72,13 +74,22 @@ abstract class Repo
      */
     protected $user = null;
 
+/**
+     * @ORM\ManyToMany(targetEntity="KnpbundlesUser", inversedBy="usedRepos")
+     * @ORM\JoinTable(name="repos_usage",
+     *      joinColumns={@ORM\JoinColumn(name="repo_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="knpbundles_user_id", referencedColumnName="id")}
+     *      )
+     */
+    protected $repoUsers = null;
+
     /**
     * Links for the repo
     *
     * @ORM\OneToMany(targetEntity="Link", mappedBy="repo", cascade={"persist"})
     */
-    protected $links = null;    
-    
+    protected $links = null;
+
     /**
      * Repo description
      *
@@ -727,5 +738,20 @@ abstract class Repo
         $class = get_class($this);
 
         return substr($class, strrpos($class, '\\')+1);
+    }
+
+    public function getRepoUsers()
+    {
+        return $this->repoUsers;
+    }
+
+    public function getNbRepoUsers()
+    {
+        return count($this->repoUsers);
+    }
+
+    public function addRepoUser(KnpbundlesUser $user)
+    {
+        $this->repoUsers[] = $user;
     }
 }

@@ -208,11 +208,16 @@ h1{display:block;padding:20px 20px 20px 0px;margin:0;font-size:22px;line-height:
 #repo-show .commits{width:220px;float:right;margin:0px 20px 10px 00px;padding:0px 0 10px 10px;overflow:hidden;font-size:12px;}
 #repo-show .commits ul{margin-bottom:20px;}
 #repo-show .commits li{padding:5px 0px;border-top:1px solid #eee;}
+#repo-show .commits li.repoUsers{color:#58AA00;font-weight:bold;}
 #repo-show .commits h3{font-weight:bold;}
 #repo-show .commits .infos{font-style:italic;}
 #repo-show #side{float:right;width:275px;margin:5px;}
 #repo-show #data{float:left;width:628px;margin:0 0 20px 0px;font-size:12px;padding:10px;background:#fafafa;border:1px solid #DDDDDD;}
 #repo-show #disqus_thread{font-size:12px;background:none repeat scroll 0 0 #FAFAFA;border:1px solid #DDDDDD;padding:0 10px 0 10px;float:left;margin:0 0 20px 0;width:628px;}
+#repo-show div.actions a {font-weight:bold;float:right;margin-right: 20px;width:200px;text-align:center;margin-bottom:10px;}
+#repo-show a.github {margin-top: 0px;}
+#repo-show a.you-are-using {clear: right;background:#58AA00;}
+#change-status-form {clear: right;float: right;width:230px;text-align: center;margin-right: 20px;font-size: 14px;color:#58AA00;font-weight: bold;}
     #links {
         float:left;
         width:628px;

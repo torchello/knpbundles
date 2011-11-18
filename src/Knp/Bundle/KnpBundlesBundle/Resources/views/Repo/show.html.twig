@@ -9,7 +9,16 @@
     <h1>{{ repo.name }}</h1>
     <div class="actions">
         <div id="repo-gplusone"><g:plusone {% if repo.homepage %}href="{{ repo.homepage }}"{% endif %}></g:plusone></div>
-        <a class="button github" style="float:right; margin-top: 0px; margin-right: 40px;" href="{{ repo.gitHubUrl }}">{% trans %}bundles.show.github{% endtrans %}</a>
+        <a class="button github" href="{{ repo.gitHubUrl }}">{% trans %}bundles.show.github{% endtrans %}</a>
+        {% if app.user is not null and isUsedByUser%}
+        <div id="change-status-form"><form action="{{ path('repo_change_usage_status', { 'username': repo.username, 'name': repo.name }) }}">
+            <input type="checkbox" checked="checked" id="change-usage-status" /> {% trans %}bundles.show.iAmUsing{% endtrans %}
+        </form></div>
+        {% elseif app.user is not null and not isUsedByUser%}
+        <a class="button you-are-using" href="{{ path('repo_change_usage_status', { 'username': repo.username, 'name': repo.name }) }}">
+            {% trans %}bundles.show.iAmUsing{% endtrans %}
+        </a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
@@ -30,6 +39,7 @@
             <li>{% trans %}bundles.show.infos.created{% endtrans %} <span>{{ repo.createdAt|date('date_format'|trans) }}</span></li>
             <li>{% trans %}bundles.show.infos.contributors{% endtrans %} <span>{{ repo.nbContributors }}</span></li>
             <li>{% trans %}bundles.show.infos.followers{% endtrans %} <span>{{ repo.nbFollowers }}</span></li>
+            <li class="repoUsers">{% trans %}bundles.show.infos.repoUsers{% endtrans %} <span>{{ repo.nbRepoUsers }}</span></li>
         </ul>
 
         <h3>{% trans %}bundles.show.latest_commits.title{% endtrans %}</h3>

@@ -67,13 +67,18 @@
             repo_id = $('#repo-id').val();
             url = $('#url').val();
 
-            $.post( $('form#add-url').attr( 'action' ), { "url": url, "repo_id": repo_id },
+            $.post($('form#add-url').attr('action'), { "url": url, "repo_id": repo_id },
                 function(data) {
     	            $('#links').html(data);
     	        }
     	    );
 
             return false;
+        });
+
+        // Change repo usage status
+        $('#repo-show div.actions').delegate('input[type=checkbox]', 'click', function() {
+            $('#change-status-form form').submit();
         });
     });
 

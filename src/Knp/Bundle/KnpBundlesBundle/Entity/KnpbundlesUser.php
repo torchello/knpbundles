@@ -33,6 +33,11 @@ class KnpbundlesUser implements UserInterface
      */
     protected $oAuthProvider;
 
+    /**
+    * @ORM\ManyToMany(targetEntity="Repo", mappedBy="repoUsers")
+    */
+    protected $usedRepos = null;
+
     public function __toString()
     {
         return $this->username;
@@ -87,5 +92,20 @@ class KnpbundlesUser implements UserInterface
     public function equals(UserInterface $user)
     {
         return $user instanceof KnpbundlesUser && $user->getUsername() === $this->getUsername();
+    }
+
+    public function getUsedRepos()
+    {
+        return $this->usedRepos;
+    }
+
+    public function isUsingRepo(Repo $repo)
+    {
+        return $this->getUsedRepos()->contains($repo);
+    }
+
+    public function addUsedRepo(Repo $repo)
+    {
+        $this->usedRepos[] = $repo;
     }
 }

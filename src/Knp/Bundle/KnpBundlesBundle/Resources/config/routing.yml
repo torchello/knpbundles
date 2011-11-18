@@ -43,6 +43,11 @@ user_show:
     defaults:       { _controller: KnpBundlesBundle:User:show }
     requirements:   { _method: "GET"}
 
+repo_change_usage_status:
+    pattern:        /{username}/{name}/change-usage-status
+    defaults:       { _controller: KnpBundlesBundle:Repo:changeUsageStatus }
+    requirements:   { _method: "GET", name: ".+" }
+
 repo_show:
     pattern:        /{username}/{name}
     defaults:       { _controller: KnpBundlesBundle:Repo:show }

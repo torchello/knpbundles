@@ -61,4 +61,18 @@ class RepoControllerTest extends WebTestCase
         $crawler = $client->followRedirect();
         $this->assertTrue($crawler->filter('html:contains("We\'re fetching informations about this repo.")')->count() > 0);
     }
+
+    public function testIAmUsingThisRepo()
+    {
+        $client = self::createClient();
+        $crawler = $client->request('GET', '/');
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        
+        $link = $crawler->filter('a:contains("FooBundle")')->first()->link();
+        $crawler = $client->click($link);
+        
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertEquals(1, $crawler->filter('html:contains("Nb of users using this repo")')->count());
+        $this->assertEquals(0, $crawler->filter('a:contains("I am using this repo")')->count());
+    }
 }

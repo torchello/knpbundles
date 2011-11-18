@@ -119,6 +119,7 @@ class User
     {
         $this->repos = new ArrayCollection();
         $this->contributionRepos = new ArrayCollection();
+        $this->usedRepos = new ArrayCollection();
         $this->createdAt = new \DateTime('NOW');
     }
 

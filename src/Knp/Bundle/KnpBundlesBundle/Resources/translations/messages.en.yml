@@ -54,6 +54,7 @@ bundles.show:
         created: "Created"
         contributors: "Nb of contributors:"
         followers: "Nb of followers:"
+        repoUsers: "Nb of users using this repo:"
     latest_commits:
         title: "Latest commits"
         by: "By"
@@ -61,6 +62,7 @@ bundles.show:
         by: "by"
         and: "&"
         contributors: "contributors…"
+    iAmUsing: "I am using this repo"
 
 bundles.list:
     by: " by "
