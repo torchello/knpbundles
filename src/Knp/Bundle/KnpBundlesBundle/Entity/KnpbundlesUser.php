@@ -6,12 +6,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Knpbunldes user authentificated using OAuth
+ * Knpbunldes user authenticated using OAuth
  *
  * @ORM\Entity
  * @ORM\Table(
  *      name="knpbundles_user",
- *      uniqueConstraints={@ORM\UniqueConstraint(name="username",columns={"username"})}
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="username",columns={"username", "oAuthProvider"})}
  * )
  */
 class KnpbundlesUser implements UserInterface
@@ -63,32 +63,29 @@ class KnpbundlesUser implements UserInterface
         return $this->oAuthProvider;
     }
 
-    function getRoles()
+    public function getRoles()
     {
         return array('ROLE_USER');
     }
 
-    function getPassword()
+    public function getPassword()
     {
         return '';
     }
 
-    function getSalt()
+    public function getSalt()
     {
         return '';
     }
     
 
-    function eraseCredentials()
+    public function eraseCredentials()
     {
     
     }
 
-    function equals(UserInterface $user)
+    public function equals(UserInterface $user)
     {
-        return (
-            $user instanceof User
-            && $user->getUsername() === $this->getUsername()
-        );
+        return $user instanceof KnpbundlesUser && $user->getUsername() === $this->getUsername();
     }
 }

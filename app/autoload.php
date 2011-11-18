@@ -19,7 +19,7 @@ $loader->registerNamespaces(array(
     'Zend'                          => __DIR__.'/../vendor/zend/library',
     'Monolog'                       => __DIR__.'/../vendor/monolog/src',
     'Goutte'                        => __DIR__.'/../vendor/goutte/src',
-	'Etcpasswd'                     => __DIR__.'/../vendor/bundles',
+    'Etcpasswd'                     => __DIR__.'/../vendor/bundles',
     'Buzz'                          => __DIR__.'/../vendor/buzz/lib',
 ));
 

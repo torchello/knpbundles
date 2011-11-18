@@ -170,8 +170,6 @@ class RepoController extends Controller
 
     public function addAction(Request $request)
     {
-        $user = $this->get('security.context')->getToken()->getUser();
-        var_dump($user); die;
         if ($request->request->has('repo') ) {
             $repo = $request->request->get('repo');
 

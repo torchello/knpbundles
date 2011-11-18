@@ -58,9 +58,9 @@
                 <div id="octocat">
                     <img src="{{ asset('bundles/knpbundles/images/octocat.png') }}" />
                 </div>
-                {% if app.security.getToken().getUser() != 'anon.' %}
+                {% if app.user is not null %}
                 <div>
-                You're logged as <b>{{ app.security.getToken().getUser() }}</b><br />
+                You're logged as <b>{{ app.user }}</b><br />
                 <a href="{{ path('logout') }}">Log out</a>
                 </div>
                 {% else %}
