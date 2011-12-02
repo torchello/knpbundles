@@ -4,6 +4,7 @@ menu:
     bundles: "Bundles"
     users: "Developers"
     evolution: "Evolution"
+    addBundleManually: "Register a bundle"
 
     promo:
         nb: 3
@@ -169,7 +170,6 @@ links:
     addLink: "You can add new link:"
 
 addBundle:
-    addBundleManually: "Add Symfony2 bundle manually"
     addBundle: "Add Symfony2 bundle"
     introText: "You can add a bundle manually by entering its GitHub url. Basic info will be available immediately while some additional info should be fetched in some hours. Please be patient."
     invalidBundleName: "Please enter a valid GitHub repo name (e.g. knplabs/KnpBundles)"
