@@ -68,6 +68,25 @@
 
             return false;
         });
+
+        // Add bundle url
+        $('#links').delegate('form', 'submit', function() {
+            bundle_id = $('#bundle-id').val();
+            url = $('#url').val();
+
+            $.post($('form#add-url').attr('action'), { "url": url, "bundle_id": bundle_id },
+                function(data) {
+    	            $('#links').html(data);
+    	        }
+    	    );
+
+            return false;
+        });
+
+        // Change bundle usage status
+        $('#bundle-show .col-right').delegate('input[type=checkbox]', 'click', function() {
+            $('#change-status-form form').submit();
+        });
     });
 
     function moveElement(className ,direction)

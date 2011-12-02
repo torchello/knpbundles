@@ -17,6 +17,11 @@
                 {%- endfor %}
             </ul>
         </div>
+        {% if app.user is not null %}
+        <a class="button" id="add-bundle-btn" href="{{ path('add_bundle') }}">
+            {% trans %}addBundle.addBundleManually{% endtrans %}
+        </a>
+        {% endif %}
     </div>
     <div id="main">
         {% include 'KnpBundlesBundle:Bundle:bigList.html.twig' with {'bundles': bundles} %}

@@ -15,6 +15,7 @@
                 <li>{% trans %}bundles.show.infos.created{% endtrans %} <span>{{ bundle.createdAt|date('date_format'|trans) }}</span></li>
                 <li>{% trans %}bundles.show.infos.contributors{% endtrans %} <span>{{ bundle.nbContributors }}</span></li>
                 <li>{% trans %}bundles.show.infos.followers{% endtrans %} <span>{{ bundle.nbFollowers }}</span></li>
+                <li>{% trans %}bundles.show.infos.users{% endtrans %} <span>{{ bundle.nbBundleUsers }}</span></li>
                 <li class="info-github" title="{% trans %}bundles.show.infos.github{% endtrans %}">
                     <a href="{{ bundle.githubUrl }}">{{ bundle.fullName }}</a>
                 </li>
@@ -30,6 +31,17 @@
                     <a href="{{ bundle.packagistUrl }}">{{ bundle.composerName }}</a>
                 </li>
                 {% endif %}
+                <li>
+                {% if app.user is not null and isUsedByUser %}
+                <div id="change-status-form"><form action="{{ path('bundle_change_usage_status', { 'username': bundle.username, 'name': bundle.name }) }}">
+                    <input type="checkbox" checked="checked" id="change-usage-status" /> {% trans %}bundles.show.iAmUsing{% endtrans %}
+                </form></div>
+                {% elseif app.user is not null and not isUsedByUser %}
+                <a class="button i-am-using" href="{{ path('bundle_change_usage_status', { 'username': bundle.username, 'name': bundle.name }) }}">
+                    {% trans %}bundles.show.iAmUsing{% endtrans %}
+                </a>
+                {% endif %}
+                </li>
             </ul>
         </div>
 
@@ -104,7 +116,8 @@
                 {{ bundle.name }}
                 <span class="username">{% trans %}bundles.list.by{% endtrans %} <a href="{{ path('user_show', {'name': bundle.username}) }}">{{ bundle.username }}</a></span>
             </h1>
-            <p class="description">{{ bundle.description }}</p>
+            {% set noDescriptionNotice = 'bundle.noDescription'|trans %}
+            <p class="description">{{ bundle.description|default(noDescriptionNotice) }}</p>
         </div>
 
         <div class="actions">
@@ -122,7 +135,11 @@
         </div>
     </div>
     {% endif %}
-    
+
+    <div id="links">
+        {% include 'KnpBundlesBundle:Bundle:links.html.twig' %}
+    </div>
+
     <div id="disqus_thread"></div>
     <script type="text/javascript">
         var disqus_shortname = 's2b';

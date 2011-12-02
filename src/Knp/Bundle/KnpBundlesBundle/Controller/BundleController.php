@@ -13,6 +13,8 @@ use Symfony\Component\Templating\EngineInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use Knp\Bundle\KnpBundlesBundle\Entity\Bundle;
+use Knp\Bundle\KnpBundlesBundle\Entity\Link;
+use Knp\Bundle\KnpBundlesBundle\Entity\KnpbundlesUser;
 use Knp\Menu\MenuItem;
 
 class BundleController extends Controller
@@ -70,8 +72,11 @@ class BundleController extends Controller
 
         $this->highlightMenu($bundle instanceof Bundle);
 
+        $user = $this->get('security.context')->getToken()->getUser();
+
         return $this->render('KnpBundlesBundle:Bundle:show.'.$format.'.twig', array(
             'bundle'        => $bundle,
+            'isUsedByUser'  => $user instanceof KnpbundlesUser && $user->isUsingBundle($bundle),
             'callback'      => $this->get('request')->query->get('callback')
         ));
     }
@@ -133,6 +138,116 @@ class BundleController extends Controller
             'bundles'       => $bundles,
             'callback'      => $this->get('request')->query->get('callback')
         ));
+    }
+
+       public function addLinkAction(Request $request)
+    {
+        if (!$this->userIsLogged() || !$request->isXmlHttpRequest()) {
+            return $this->redirect($this->generateUrl('bundle_list'));
+        }
+
+        $url = $request->request->get('url');
+        $bundleId = (int)$request->request->get('bundle_id');
+        $bundle = $this->getRepository('Bundle')->find($bundleId);
+
+        if ($bundle && $bundle->hasLink($url)) {
+            $error = true;
+            $errorMessage = 'links.errors.linkExists';
+        } elseif (!preg_match('$(http|https|ftp)://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?$', $url)) {
+            $error = true;
+            $errorMessage = 'links.errors.enterValidUrl';
+        } else {
+            $knpbundlesUser = $this->get('security.context')->getToken()->getUser();
+            $link = new Link($url, $knpbundlesUser);
+            $bundle->addLink($link);
+
+            $em = $this->get('doctrine')->getEntityManager();
+            $em->persist($bundle);
+            $em->flush();
+
+            $error = false;
+            $errorMessage = '';
+        }
+
+        $data = array('bundle' => $bundle, 'error' => $error, 'errorMessage' => $errorMessage, 'url' => $url);
+
+        return $this->render('KnpBundlesBundle:Bundle:links.html.twig', $data);
+    }
+
+    public function addAction(Request $request)
+    {
+        if (!$this->userIsLogged()) {
+            return $this->redirect($this->generateUrl('bundle_list'));
+        }
+
+        if ($request->request->has('bundle') ) {
+            $bundle = $request->request->get('bundle');
+
+            if (preg_match('/^[A-Za-z0-9-]+\/[A-Za-z0-9-\.]+$/', $bundle)) {
+                $updater = $this->get('knp_bundles.updater');
+                $updater->setUp();
+                try {
+                    $bundles = $updater->addRepo($bundle, false);
+
+                    $bundleParts = explode('/', $bundle);
+                    $params = array('username' => $bundleParts[0], 'name' => $bundleParts[1]);
+
+                    return $this->redirect($this->generateUrl('bundle_show', $params));
+                } catch (UserNotFoundException $e) {
+                    $error = true;
+                    $errorMessage = 'addBundle.userNotFound';
+                }
+            } else {
+                $error = true;
+                $errorMessage = 'addBundle.invalidBundleName';
+            }
+        } else {
+            $bundle = '';
+            $error = false;
+            $errorMessage = '';
+        }
+
+        $data = array('bundle' => $bundle, 'error' => $error, 'errorMessage' => $errorMessage);
+
+        return $this->render('KnpBundlesBundle:Bundle:add.html.twig', $data);
+    }
+
+    public function changeUsageStatusAction($username, $name)
+    {
+        if (!$this->userIsLogged()) {
+            return $this->redirect($this->generateUrl('bundle_list'));
+        }
+
+        $params = array('username' => $username, 'name' => $name);
+        
+        $bundle = $this->getRepository('Bundle')->findOneByUsernameAndName($username, $name);
+        if (!$bundle) {
+            throw new NotFoundHttpException(sprintf('The bundle "%s/%s" does not exist', $username, $name));
+        }
+        
+        if (!$user = $this->get('security.context')->getToken()->getUser()) {
+            return $this->redirect($this->generateUrl('bundle_show', $params));
+        }
+        $em = $this->get('doctrine')->getEntityManager();
+
+        if ($user->isUsingBundle($bundle)) {
+            $bundle->getBundleUsers()->removeElement($user);
+            $user->getUsedBundles()->removeElement($bundle);
+        } else {
+            $bundle->addBundleUser($user);
+            $user->addUsedBundle($bundle);
+            $em->persist($bundle);
+            $em->persist($user);
+        }
+
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('bundle_show', $params));
+    }
+
+    protected function userIsLogged()
+    {
+        return $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY');
     }
 
     /**

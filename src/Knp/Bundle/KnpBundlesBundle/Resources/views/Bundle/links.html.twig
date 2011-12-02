@@ -1,0 +1,21 @@
+<div id="links-data">
+{% if bundle.nbLinks != 0 %}
+    <p>{% trans %}links.existingLinks{% endtrans %}</p>
+    <ul>
+    {% for link in bundle.links %}
+        <li>
+            <a href="{{ link.url }}" target="blank" rel="nofollow">{{ link.title | default(link.url) }}</a> 
+            by <i>{{ link.knpbundlesUser }}</i>
+         </li>
+    {% endfor %}    
+    </ul>
+{% else %}
+    <div>
+        <p>{% trans %}links.noLinks{% endtrans %}</p>
+    </div>
+{% endif %}
+{% if app.user is not null %}
+    <p>{% trans %}links.addLink{% endtrans %}</p>
+    {% include 'KnpBundlesBundle:Bundle:addLinkForm.html.twig' %}
+{% endif %}
+</div>

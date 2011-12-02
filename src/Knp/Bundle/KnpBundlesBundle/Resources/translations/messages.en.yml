@@ -82,6 +82,7 @@ bundles.show:
         composer: "Composer"
         travis: "Travis CI"
         github: "Github"
+        users: "Nb of users:"
     contributors:
         title: "Contributors"
     latest_commits:
@@ -93,6 +94,8 @@ bundles.show:
         contributors: "contributors…"
     chart:
         title: "Score evolution"
+    iAmUsing: "I am using this bundle"
+
 
 bundles.list:
     by: " by "
@@ -104,7 +107,7 @@ bundles.list:
         featured: "What's hot?"
         newest: "Newest bundles"
     buildStatus: "Build status "
-    
+
 users:
     meta:
         title: "Discover %count% Symfony2 Developers"
@@ -156,3 +159,22 @@ travis:
         passing: "Passing"
         failing: "Failing"
         unknown: "Unknown"
+
+links:
+    errors:
+        enterValidUrl: "Please enter a valid URL"
+        linkExists: "This link has been already added"
+    existingLinks: "Existing links:"
+    noLinks: "No links were added to this bundle."
+    addLink: "You can add new link:"
+
+addBundle:
+    addBundleManually: "Add Symfony2 bundle manually"
+    addBundle: "Add Symfony2 bundle"
+    introText: "You can add a bundle manually by entering its GitHub url. Basic info will be available immediately while some additional info should be fetched in some hours. Please be patient."
+    invalidBundleName: "Please enter a valid GitHub repo name (e.g. knplabs/KnpBundles)"
+    userNotFound: "Specified user was not found on GitHub"
+    example: Example:
+
+bundle:
+    noDescription: "We're fetching informations about this repo. In a few hours, you'll know everything about it."

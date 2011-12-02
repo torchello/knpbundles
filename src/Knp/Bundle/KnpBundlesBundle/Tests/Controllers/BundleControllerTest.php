@@ -46,4 +46,31 @@ class BundleControllerTest extends WebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertRegexp('/^<\?xml/', $client->getResponse()->getContent());
     }
+
+    public function testLinks()
+    {
+        $client = self::createClient();
+        $crawler = $client->request('GET', '/');
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        
+        $link = $crawler->filter('a:contains("FooBundle")')->first()->link();
+        $crawler = $client->click($link);
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($crawler->filter('html:contains("links")')->count() > 0);
+    }
+
+    public function testIAmUsingThisRepo()
+    {
+        $client = self::createClient();
+        $crawler = $client->request('GET', '/');
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        
+        $link = $crawler->filter('a:contains("FooBundle")')->first()->link();
+        $crawler = $client->click($link);
+        
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertEquals(1, $crawler->filter('html:contains("Nb of users")')->count());
+        $this->assertEquals(0, $crawler->filter('a:contains("I am using this bundle")')->count());
+    }
 }
