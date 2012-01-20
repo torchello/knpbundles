@@ -2,9 +2,10 @@
 
 namespace Knp\Bundle\KnpBundlesBundle\Badge;
 
-use Imagine\GD\Imagine;
+use Imagine\Gd\Imagine;
 use Imagine\Image\Point;
 use Imagine\Image\Color;
+use Knp\Bundle\KnpBundlesBundle\Entity\Bundle;
 
 class BadgeGenerator
 {
@@ -64,15 +65,22 @@ class BadgeGenerator
 
         // Recommend
         if ($recommenders) {
-            $image->draw()
-                ->text('by '.$recommenders.' developers', $this->setFont($imagine, $this->font, 8), new Point(98, 40));
+            $recommendationsText = 'by '.$recommenders.' developers';
+            
+        } else {
+            $recommendationsText = 'No recommendations';
         }
+        $image->draw()->text(
+            $recommendationsText, 
+            $this->setFont($imagine, $this->font, 8), 
+            new Point(98, 40)
+        );
 
         // Remove existing badge
-        $this->removeIfExist($this->getBadgeFile($bundleName));
+        $this->removeIfExist($this->getBadgeFile($bundle));
 
         // Save badge
-        $image->save($this->getBadgeFile($bundleName));
+        $image->save($this->getBadgeFile($bundle));
     }
 
     public function setContainer($container)
@@ -97,12 +105,12 @@ class BadgeGenerator
     /**
      * Get badge image full path
      *
-     * @param string $bundleName
-     * @return strung
+     * @param Bundle $bundle
+     * @return string
      */
-    protected function getBadgeFile($bundleName)
+    protected function getBadgeFile(Bundle $bundle)
     {
-        return $this->getUploadDir().'/'.$bundleName.'.png';
+        return $this->getUploadDir().'/'.$bundle->getUsername().'-'.$bundle->getName().'.png';
     }
 
     protected function removeIfExist($file)
